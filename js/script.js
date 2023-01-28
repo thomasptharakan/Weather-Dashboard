@@ -72,6 +72,49 @@ function getWeather(searchCity) {
         }
 
         // Add JumboTron and Cards
+
+        for (i in weatherSearchResult.weather) {
+            //Add jumbotron for the first element
+            if (i == 0) {
+                //Adding Jumbotron
+                $('#today').empty();
+                var jmbtrn = $('<div>');
+                jmbtrn.attr('class', 'jumbotron');
+                jmbtrn.attr('style', 'border: 1px solid black; padding:10px;');
+
+                var pEl = $('<h1>');
+                pEl.attr('class', 'display-6');
+                pEl.text(`${weatherSearchResult.city} (${weatherSearchResult.weather[i].date})`); //Add icon
+                jmbtrn.append(pEl);
+
+                pEl = $('<p>');
+                pEl.attr('class', 'card-text');
+                pEl.text(`Temp: ${}`);
+                jmbtrn.append(pEl);
+
+                pEl = $('<p>');
+                pEl.attr('class', 'card-text');
+                pEl.text('Wind: ');
+                jmbtrn.append(pEl);
+
+                pEl = $('<p>');
+                pEl.attr('class', 'card-text');
+                pEl.text('Humidty: ');
+                jmbtrn.append(pEl);
+
+                $('#today').append(jmbtrn);
+            }else{
+                
+            }
+
+        }
+
+
+
+
+
+
+
         console.log(weatherSearchResult);
     });
 
