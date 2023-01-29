@@ -45,7 +45,7 @@ function getWeather(searchCity) {
             weatherDay.temp = (temp - 273.15).toFixed(2);
             weatherDay.wind = wind;
             weatherDay.humidity = humidity;
-            weatherDay.icon = icon;
+            weatherDay.icon = (`http://openweathermap.org/img/wn/${icon}.png`);
             weatherSearchResult.weather.push(weatherDay)
         }
 
@@ -53,11 +53,17 @@ function getWeather(searchCity) {
         for (j = 0; j < 6; j++) {
             //Get the data to check against - Start from first date in list
             var checkDate = moment(currDate).add(j, 'day').format('yyyy-MM-DD');
+            //Get morning readings except for current day
+            
             //Check against each element in list
             for (i in response.list) {
                 //Check for a match in the list item date vs the checkdate
+                
+                
                 if (moment(response.list[i].dt_txt).format('DD/MM/YYYY') === moment(checkDate).format('DD/MM/YYYY')) {
+                    
                     //Add the Weather data to the object
+                    console.log(moment(response.list[i].dt_txt).format('DD/MM/YYYY') + ' ' + moment(checkDate).format('DD/MM/YYYY') + ' ' );
                     addWeatherDay(
                         checkDate,
                         response.list[i].main.temp,
@@ -76,44 +82,88 @@ function getWeather(searchCity) {
         for (i in weatherSearchResult.weather) {
             //Add jumbotron for the first element
             if (i == 0) {
+                
                 //Adding Jumbotron
                 $('#today').empty();
+                $('#forecast').empty();
                 var jmbtrn = $('<div>');
                 jmbtrn.attr('class', 'jumbotron');
                 jmbtrn.attr('style', 'border: 1px solid black; padding:10px;');
 
+                //Add City,Date
                 var pEl = $('<h1>');
                 pEl.attr('class', 'display-6');
-                pEl.text(`${weatherSearchResult.city} (${weatherSearchResult.weather[i].date})`); //Add icon
+                pEl.text(`${weatherSearchResult.city} (${weatherSearchResult.weather[i].date})`);
+                
+                //Add image
+                var imgWeather = $('<img>');
+                imgWeather.attr('src',weatherSearchResult.weather[i].icon);
+                pEl.append(imgWeather);
+                jmbtrn.append(pEl);
+
+                //Add Temperature details
+
+                pEl = $('<p>');
+                pEl.attr('class', 'card-text');
+                pEl.text(`Temp: ${weatherSearchResult.weather[i].temp} °C`);
                 jmbtrn.append(pEl);
 
                 pEl = $('<p>');
                 pEl.attr('class', 'card-text');
-                pEl.text(`Temp: ${}`);
+                pEl.text(`Wind: ${weatherSearchResult.weather[i].wind} KPH`);
                 jmbtrn.append(pEl);
 
                 pEl = $('<p>');
                 pEl.attr('class', 'card-text');
-                pEl.text('Wind: ');
-                jmbtrn.append(pEl);
-
-                pEl = $('<p>');
-                pEl.attr('class', 'card-text');
-                pEl.text('Humidty: ');
+                pEl.text(`Humidty: ${weatherSearchResult.weather[i].humidity}%`);
                 jmbtrn.append(pEl);
 
                 $('#today').append(jmbtrn);
             }else{
-                
+                //Adding forecast Cards
+                //Add forecast Text
+
+                //Add forecast date
+                var cardEl = $('<div>');
+                cardEl.attr('class','card d-inline-block');
+                cardEl.attr('style','width: 12rem; background-color:#2F365A; color: white; margin: 5px');
+                var cardDiv = $('<div>');
+                cardDiv.attr('class','card-body');
+
+                var pEl = $('<h5>');
+                pEl.attr('class', 'card-title');
+                pEl.text(`(${weatherSearchResult.weather[i].date})`); //Add icon
+                cardDiv.append(pEl);
+                //Add image
+                var imgWeather = $('<img>');
+                imgWeather.attr('src',weatherSearchResult.weather[i].icon);
+                pEl.append(imgWeather);
+                cardDiv.append(pEl);
+
+                pEl = $('<p>');
+                pEl.attr('class', 'card-text');
+                pEl.text(`Temp: ${weatherSearchResult.weather[i].temp} °C`);
+                cardDiv.append(pEl);
+
+                pEl = $('<p>');
+                pEl.attr('class', 'card-text');
+                pEl.text(`Wind: ${weatherSearchResult.weather[i].wind} KPH`);
+                cardDiv.append(pEl);
+
+                pEl = $('<p>');
+                pEl.attr('class', 'card-text');
+                pEl.text(`Humidity: ${weatherSearchResult.weather[i].humidity}%`);
+                cardDiv.append(pEl);
+
+                cardEl.append(cardDiv);
+
+                $('#forecast').append(cardEl);
+
+
+
             }
 
         }
-
-
-
-
-
-
 
         console.log(weatherSearchResult);
     });
