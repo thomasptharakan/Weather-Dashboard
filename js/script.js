@@ -46,7 +46,7 @@ function getWeather(searchCity) {
             weatherDay.temp = (temp - 273.15).toFixed(2);
             weatherDay.wind = wind;
             weatherDay.humidity = humidity;
-            weatherDay.icon = (`http://openweathermap.org/img/wn/${icon}.png`);
+            weatherDay.icon = (`https://openweathermap.org/img/wn/${icon}.png`);
             weatherSearchResult.weather.push(weatherDay)
         }
         
