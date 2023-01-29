@@ -4,6 +4,7 @@ var searchHistory = [];
 $('#search-button').on('click', function (event) {
     event.preventDefault();
     var seletedCity = $('#search-input').val();
+    $('#search-input').val('');
     if (seletedCity !== '') {
         getWeather(seletedCity);
         addSearchHistory(seletedCity);
@@ -30,7 +31,7 @@ function getWeather(searchCity) {
         url: queryURL,
         method: "GET"
     }).then(function (response) {
-        console.log(response);
+        // console.log(response);
         var weatherSearchResult = {};
         weatherSearchResult.city = response.city.name;
         //Set to first date in list
@@ -48,7 +49,10 @@ function getWeather(searchCity) {
             weatherDay.icon = (`http://openweathermap.org/img/wn/${icon}.png`);
             weatherSearchResult.weather.push(weatherDay)
         }
-
+        
+        //Set format to take first value matching current date
+        var dtFormat = 'DD/MM/YYYY';
+        var chkdtFormat = 'DD/MM/YYYY';
         //Get 6 Weather readings
         for (j = 0; j < 6; j++) {
             //Get the data to check against - Start from first date in list
@@ -60,10 +64,12 @@ function getWeather(searchCity) {
                 //Check for a match in the list item date vs the checkdate
                 
                 
-                if (moment(response.list[i].dt_txt).format('DD/MM/YYYY') === moment(checkDate).format('DD/MM/YYYY')) {
-                    
+                if (moment(response.list[i].dt_txt).format(dtFormat) === moment(checkDate).format(chkdtFormat)) {
+                    //Change Date format to take morning Temperatures
+                    dtFormat = 'DD/MM/YYYY HH:mm:ss';
+                    chkdtFormat = 'DD/MM/YYYY 06:00:00';            
+
                     //Add the Weather data to the object
-                    console.log(moment(response.list[i].dt_txt).format('DD/MM/YYYY') + ' ' + moment(checkDate).format('DD/MM/YYYY') + ' ' );
                     addWeatherDay(
                         checkDate,
                         response.list[i].main.temp,
@@ -165,7 +171,7 @@ function getWeather(searchCity) {
 
         }
 
-        console.log(weatherSearchResult);
+        // console.log(weatherSearchResult);
     });
 
 }
