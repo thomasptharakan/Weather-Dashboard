@@ -125,6 +125,13 @@ function getWeather(searchCity) {
                 jmbtrn.append(pEl);
 
                 $('#today').append(jmbtrn);
+
+                 //Add Forecast
+                pEl = $('<h2>');
+                pEl.text(`5-Day Forecast:`);
+                 $('#forecast').append(pEl);
+                //  $('#forecast').append($('<hr>'));
+                var forecastDiv = $('<div>');
             }else{
                 //Adding forecast Cards
                 //Add forecast Text
@@ -162,14 +169,12 @@ function getWeather(searchCity) {
                 cardDiv.append(pEl);
 
                 cardEl.append(cardDiv);
-
-                $('#forecast').append(cardEl);
-
-
-
+                forecastDiv.append(cardEl);
             }
 
         }
+        //Append the forecast block to forecast section 
+        $('#forecast').append(forecastDiv);
 
         // console.log(weatherSearchResult);
     });
